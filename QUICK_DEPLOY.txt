@@ -1,0 +1,85 @@
+🚀 VERCEL BACKEND DEPLOYMENT - QUICK GUIDE
+================================================
+
+✅ FILES READY:
+- vercel.json (Vercel configuration) ✓
+- package.json (Dependencies) ✓
+- src/server.js (Main server) ✓
+
+================================================
+
+📦 STEP 1: PUSH TO GITHUB
+--------------------------
+cd backend
+git init
+git add .
+git commit -m "Backend deployment ready"
+git branch -M main
+git remote add origin YOUR_REPO_URL
+git push -u origin main
+
+================================================
+
+🌐 STEP 2: DEPLOY ON VERCEL
+----------------------------
+1. Go to: https://vercel.com
+2. Click: "New Project"
+3. Import: Your GitHub repo
+4. Root Directory: Select "backend" folder
+5. Click: "Deploy"
+
+================================================
+
+⚙️ STEP 3: ADD ENVIRONMENT VARIABLES
+-------------------------------------
+In Vercel Dashboard → Project Settings → Environment Variables
+
+Add these:
+
+PORT = 5001
+NODE_ENV = production
+CORS_ORIGIN = https://your-frontend-url.vercel.app
+
+SMTP_HOST = smtp.gmail.com
+SMTP_PORT = 587
+SMTP_SECURE = false
+SMTP_USER = your-email@gmail.com
+SMTP_PASS = your-app-password
+
+MAIL_FROM = Codezyra <your-email@gmail.com>
+MAIL_TO = codezyrapakistan@gmail.com
+
+================================================
+
+🔗 STEP 4: UPDATE FRONTEND
+---------------------------
+After backend deployment, you'll get URL:
+https://your-backend.vercel.app
+
+Update file: frontend/src/config/api.js
+Change: PROD_API_URL = 'https://your-backend.vercel.app'
+
+================================================
+
+✅ STEP 5: TEST
+---------------
+Backend Health:
+https://your-backend.vercel.app/api/health
+
+Should return:
+{"status":"ok","message":"Backend server is running"}
+
+================================================
+
+📝 NOTES:
+---------
+- CORS_ORIGIN must match frontend URL exactly
+- Use Gmail App Password (not regular password)
+- Set all env variables in Vercel dashboard
+- Redeploy after changing env variables
+
+================================================
+
+🎉 DONE! Your backend is live on Vercel!
+
+For detailed guide, see: VERCEL_DEPLOYMENT.md
