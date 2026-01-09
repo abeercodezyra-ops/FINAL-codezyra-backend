@@ -1,5 +1,5 @@
 import express from 'express';
-import { handleContactForm, healthCheck } from '../controllers/contactController.js';
+import { handleContactForm, handleNewsletterSubscription, healthCheck } from '../controllers/contactController.js';
 
 const router = express.Router();
 
@@ -8,5 +8,8 @@ router.get('/health', healthCheck);
 
 // Contact form endpoint
 router.post('/contact', handleContactForm);
+
+// Newsletter subscription endpoint
+router.post('/newsletter', handleNewsletterSubscription);
 
 export default router;

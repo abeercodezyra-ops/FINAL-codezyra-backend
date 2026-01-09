@@ -1,4 +1,4 @@
-import { sendContactEmail } from '../services/emailService.js';
+import { sendContactEmail, sendNewsletterWelcome } from '../services/emailService.js';
 
 /**
  * Handle contact form submission
@@ -47,6 +47,50 @@ export const handleContactForm = async (req, res) => {
         res.status(500).json({
             success: false,
             error: 'Failed to send message. Please try again later or contact us directly at codezyrapakistan@gmail.com'
+        });
+    }
+};
+
+/**
+ * Handle newsletter subscription
+ * POST /api/newsletter
+ */
+export const handleNewsletterSubscription = async (req, res) => {
+    try {
+        const { email } = req.body || {};
+
+        // Validation
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                error: 'Email is required.'
+            });
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Please provide a valid email address.'
+            });
+        }
+
+        // Send welcome email
+        await sendNewsletterWelcome(email);
+
+        // Success response
+        res.status(200).json({
+            success: true,
+            message: 'Successfully subscribed! Check your email for confirmation.'
+        });
+
+    } catch (error) {
+        console.error('Newsletter subscription error:', error);
+
+        res.status(500).json({
+            success: false,
+            error: 'Failed to subscribe. Please try again later.'
         });
     }
 };

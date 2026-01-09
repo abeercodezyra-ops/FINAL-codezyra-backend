@@ -327,3 +327,194 @@ Reply to this email to respond directly to ${name}.
         throw error;
     }
 };
+
+/**
+ * Send newsletter welcome email
+ * @param {string} email - Subscriber email
+ * @returns {Promise<Object>} - Email send result
+ */
+export const sendNewsletterWelcome = async (email) => {
+    const MAIL_FROM = process.env.MAIL_FROM || process.env.SMTP_USER;
+
+    const mailOptions = {
+        from: MAIL_FROM,
+        to: email,
+        subject: '🎉 Welcome to Codezyra Newsletter!',
+        text: `
+Welcome to Codezyra Newsletter!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Thank you for subscribing to our newsletter!
+
+You'll now receive:
+✓ Latest tech trends and insights
+✓ Development tips and best practices
+✓ Industry news and updates
+✓ Exclusive content and resources
+
+Stay tuned for our next edition!
+
+Best regards,
+The Codezyra Team
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+If you no longer wish to receive these emails, please contact us.
+        `.trim(),
+        html: `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .emoji {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .content h2 {
+            color: #059669;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+        .content p {
+            color: #4b5563;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .benefits {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin: 24px 0;
+            border-radius: 8px;
+        }
+        .benefits ul {
+            list-style: none;
+            padding: 0;
+        }
+        .benefits li {
+            color: #1f2937;
+            font-size: 15px;
+            margin: 10px 0;
+            padding-left: 28px;
+            position: relative;
+        }
+        .benefits li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .cta {
+            text-align: center;
+            margin: 32px 0;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white !important;
+            padding: 14px 32px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        .footer {
+            background: #f9fafb;
+            padding: 24px 30px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        .footer p {
+            color: #6b7280;
+            font-size: 13px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="emoji">🎉</div>
+            <h1>Welcome to Codezyra!</h1>
+        </div>
+        
+        <div class="content">
+            <h2>Thank you for subscribing!</h2>
+            <p>We're thrilled to have you join our community of developers, tech enthusiasts, and innovation seekers.</p>
+            
+            <div class="benefits">
+                <ul>
+                    <li>Latest tech trends and insights</li>
+                    <li>Development tips and best practices</li>
+                    <li>Industry news and updates</li>
+                    <li>Exclusive content and resources</li>
+                </ul>
+            </div>
+            
+            <p>Stay tuned for our next edition packed with valuable content tailored just for you!</p>
+            
+            <div class="cta">
+                <a href="https://codezyra.com" class="cta-button">Visit Our Website</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Codezyra</strong> - Transforming Ideas into Digital Reality</p>
+            <p>If you no longer wish to receive these emails, please contact us.</p>
+            <p style="margin-top: 16px; font-size: 11px; color: #94a3b8;">
+                © ${new Date().getFullYear()} Codezyra. All rights reserved.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+        `,
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('✅ Newsletter welcome email sent:', info.messageId);
+        return { success: true, messageId: info.messageId };
+    } catch (error) {
+        console.error('❌ Newsletter email error:', error);
+        throw error;
+    }
+};
